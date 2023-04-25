@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Main page{% endblock %}
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+    {% load static %}
+    <nav class="navbar bg-dark" data-bs-theme="dark">
+        <form class="container-fluid justify-content-space_around">
+            <div class="logo mx-5"><img src="../static/quiz/images/logo.jpg"></div>
+            <a href="{% url 'login' %}"><button class="btn btn-outline-secondary text-white mx-5"
+                    type="button">Login</button></a>
+        </form>
+    </nav>
+
+    <div class="container text-center p-5 my-5 bg-opacity-75 bg-dark text-white rounded">
+        <h1 class="my-5">Test your general knowledge</h1>
+        <a href="{% url 'register' %}">
+            <button class="btn btn-success btn-lg p-2 m-5 rounded">
+                Register
+            </button>
+        </a>
+    </div>
+</form>
+{% endblock %}
