@@ -29,7 +29,8 @@
             <div class="collapse navbar-collapse " id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
                     <li class="nav-item text-white">
-                        <a class="nav-link active text-white" aria-current="page" href=""><i class="bi bi-house">
+                        <a class="nav-link active text-white" aria-current="page" href="{% url 'HomeUser' %}"><i
+                                class="bi bi-house">
                             </i>Home</a>
                     </li>
                     <li class="nav-item dropdown ">
@@ -63,16 +64,25 @@
                         </ul>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link active text-white" aria-current="page" href="#" >Contact</a>
+                        <a class="nav-link active text-white" aria-current="page"
+                            href="{% url 'panel' %}">Leaderboard</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link active text-white" aria-current="page" href="{% url 'contact' %}">Contact</a>
                     </li>
                 </ul>
                 <form class="d-flex justify-content-end text-white">
-                    <a href="{% url 'index' %}"><button class="btn btn-outline-secondary text-white rounded-circle  "
-                        type="button"><i class="bi bi-person-circle "></i> {{user}}</button></a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'HomeUser' %}"><button class="btn btn-outline-secondary text-white rounded-pill"
+                            type="button"><i class="bi bi-person-circle "></i> {{user}}</button></a>
+                    <a href="{% url 'logout_view' %}"><i
+                            class="bi bi-box-arrow-in-right fs-4 text-white ms-4 me-5"></i></a>
 
-                    <a href="{% url 'index' %}"><button class="btn btn-outline-secondary text-white ms-2 me-5"
-                            type="button">Log out</button></a>
-
+                    {% else %}
+                    <a href="{% url 'register' %}"><button
+                            class="btn btn-outline-secondary rounded-pill text-white me-5" type="button"><i
+                                class="bi bi-person-circle "> </i>Sign In</button></a>
+                    {% endif %}
                 </form>
             </div>
         </div>

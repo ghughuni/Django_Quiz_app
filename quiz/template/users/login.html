@@ -1,22 +1,14 @@
 {% extends 'base.html' %}
 {% block title %}Login page{% endblock %}
 {% block content %}
-<!-- <nav class="navbar bg-dark" data-bs-theme="dark">
-	<form class="container-fluid justify-content-space_around">
-		<a href="{% url 'index' %}">
-			<div class="logo mx-5"><img src="../static/quiz/images/logo.jpg"></div>
-		</a>
-		<a href="{% url 'login' %}"><button class="btn btn-outline-secondary text-white mx-5"
-				type="button">Login</button></a>
-	</form>
-</nav> -->
+
 <div class="container text-center p-5 my-5 bg-opacity-75 bg-dark text-white rounded">
 	<form method="POST">
 		{% csrf_token %}
 
 		{{form.as_p}}
 
-		<button class="btn btn-success rounded" type="submit">
+		<button class="btn btn-primary rounded-pill" type="submit">
 			Submit
 		</button>
 
