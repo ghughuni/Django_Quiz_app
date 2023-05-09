@@ -19,7 +19,7 @@ urlpatterns = [
 	path('register/', register, name='register'),
 	path('panel/', panel, name='panel'),
 	path('action/', action, name='action'),
-     
+    
 ]
 
 urlpatterns += staticfiles_urlpatterns()

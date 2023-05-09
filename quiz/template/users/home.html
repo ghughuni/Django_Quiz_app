@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}Home page{% endblock %}
 {% block content %}
-<nav class="navbar bg-dark" data-bs-theme="dark">
+<!-- <nav class="navbar bg-dark" data-bs-theme="dark">
 	<form class="container-fluid justify-content-space_around">
+
 		<a href="{% url 'index' %}">
 			<div class="logo mx-5"><img src="../static/quiz/images/logo.jpg"></div>
 		</a>
@@ -10,12 +11,12 @@
 		<a href="{% url 'index' %}"><button class="btn btn-outline-secondary text-white mx-5" type="button">Log
 				out</button></a>
 	</form>
-</nav>
+</nav> -->
 <div class="container p-5 my-5 bg-success text-warning rounded">
 	<h1 class="text-center">
 		Welcome "{{user}}"
 	</h1>
-	
+
 	<p>Please read the rules:</p>
 	<ul>
 		<li>Select a category</li>
@@ -25,7 +26,10 @@
 		<li>There are 10 questions in total</li>
 	</ul>
 	<div class="text-center">
-		<form id="myForm">
+		<form id="myForm" action="/action/" method="post">
+			{% csrf_token %}
+			<input type="hidden" name="category" value="{{category}}">
+			<input type="hidden" name="question" value="{{question}}">
 			<label for="categories" class="mx-2 text-dark fw-bold">Choose a category:</label>
 			<select name="category" id="category_options" class="mx-2 text-dark fw-bold">
 				{%for category in categories%}

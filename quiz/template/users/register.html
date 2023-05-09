@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Register page{% endblock %}
 {% block content %}
-<nav class="navbar bg-dark" data-bs-theme="dark">
+<!-- <nav class="navbar bg-dark" data-bs-theme="dark">
 	<form class="container-fluid justify-content-space_around">
 		<a href="{% url 'index' %}">
 			<div class="logo mx-5"><img src="../static/quiz/images/logo.jpg"></div>
@@ -9,7 +9,7 @@
 		<a href="{% url 'login' %}"><button class="btn btn-outline-secondary text-white mx-5"
 				type="button">Login</button></a>
 	</form>
-</nav>
+</nav> -->
 <div class="container p-5 my-5 bg-success text-white rounded">
 	<form method="POST">
 
@@ -17,9 +17,16 @@
 
 		{{form.as_p}}
 
-		<button class="btn btn-primary rounded" type="submit">
+		<button class="btn btn-primary rounded" name="submit" type="submit">
 			Submit
 		</button>
 	</form>
+
+	<div class="d-flex justify-content-center text-danger">
+		<p class="p-2">If you are already registered</p>
+		<a href="{% url 'login' %}"><button class="btn btn-info rounded"
+		type="login">
+		Log In
+	</button></a></div>
 </div>
 {% endblock %}

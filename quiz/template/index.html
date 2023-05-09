@@ -1,25 +1,91 @@
-{% extends 'base.html' %}
-{% block title %}Main page{% endblock %}
-{% block content %}
+<!DOCTYPE html>
+<html>
 
-<form method="POST">
-    {% csrf_token %}
+<head>
+    <title>{% block titulo %}{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Rubik" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     {% load static %}
-    <nav class="navbar bg-dark" data-bs-theme="dark">
-        <form class="container-fluid justify-content-space_around">
-            <div class="logo mx-5"><img src="../static/quiz/images/logo.jpg"></div>
-            <a href="{% url 'login' %}"><button class="btn btn-outline-secondary text-white mx-5"
-                    type="button">Login</button></a>
-        </form>
-    </nav>
+    <link rel="stylesheet" href="{% static 'quiz/style.css' %}">
+    <script src="{% static 'main.js' %}"></script>
+</head>
 
-    <div class="container text-center p-5 my-5 bg-opacity-75 bg-dark text-white rounded">
-        <h1 class="my-5">Test your general knowledge</h1>
-        <a href="{% url 'register' %}">
-            <button class="btn btn-success btn-lg p-2 m-5 rounded">
-                Register
-            </button>
-        </a>
-    </div>
-</form>
-{% endblock %}
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark"  data-bs-theme="dark">
+            <div class="container-fluid ">
+                <a class="navbar-brand" href="{% url 'HomeUser' %}">
+                    <div class="logo mx-5"><img src="../static/quiz/images/logo.jpg"></div>
+                </a>
+                <button class="navbar-toggler btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+                    aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse " id="navbarScroll">
+                    <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
+                        <li class="nav-item text-white">
+                            <a class="nav-link active text-white" aria-current="page" href=""><i class="bi bi-house"> </i>Home</a>
+                        </li>
+                        <li class="nav-item dropdown ">
+                            <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Category
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarScroll" >
+                                <li><a class="dropdown-item" href="{% url 'register' %}">English</a></li>
+                                <li><a class="dropdown-item" href="{% url 'register' %}">Math</a></li>
+                                <li><a class="dropdown-item" href="{% url 'register' %}">Geography</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown ">
+                            <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Resources
+                            </a>
+                            <ul class="dropdown-menu " aria-labelledby="navbarScroll">
+                                <li><a class="dropdown-item" target="_blank" href="https://www.khanacademy.org/">Khan Academy</a></li>
+                                <li><a class="dropdown-item" target="_blank" href="https://www.coursera.org/">Coursera</a></li>
+                                <li><a class="dropdown-item" target="_blank" href="https://www.gutenberg.org/">Project Gutenberg</a></li>
+                                <li><a class="dropdown-item" target="_blank" href="https://www.openculture.com/freeonlinecourses">Online university courses</a></li>
+                                <li><a class="dropdown-item" target="_blank" href="https://scholar.google.com/">Google Scholar</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="nav-item ">
+                            <a class="nav-link active text-white" aria-current="page" href="#" >Contact</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex justify-content-end text-white">
+
+                        <a href="{% url 'register' %}"><button class="btn btn-outline-secondary text-white mx-1"
+                                type="button">Sign In</button></a>
+                                <p class="text-white m-1">or</p>
+                        <a href="{% url 'login' %}"><button class="btn btn-outline-secondary text-white mx-1"
+                                type="button">Log In </button></a>
+                         
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container text-center p-5 my-5 bg-opacity-75 bg-dark text-white rounded">
+            <h1 class="my-5 test">Test your general knowledge</h1>
+            <a href="{% url 'register' %}">
+                <button class="btn btn-success btn-lg p-2 m-5 rounded">
+                    Register
+                </button>
+            </a>
+        </div>
+    </form>
+
+
+</body>
+
+</html>

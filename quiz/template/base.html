@@ -8,14 +8,75 @@
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Rubik" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'quiz/style.css' %}">
     <script src="{% static 'main.js' %}"></script>
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark" data-bs-theme="dark">
+        <div class="container-fluid ">
+            <a class="navbar-brand" href="{% url 'HomeUser' %}">
+                <div class="logo mx-5"><img src="../static/quiz/images/logo.jpg"></div>
+            </a>
+            <button class="navbar-toggler btn-dark" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse " id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
+                    <li class="nav-item text-white">
+                        <a class="nav-link active text-white" aria-current="page" href=""><i class="bi bi-house">
+                            </i>Home</a>
+                    </li>
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Category
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarScroll">
+                            <li><a class="dropdown-item" href="{% url 'HomeUser' %}">English</a></li>
+                            <li><a class="dropdown-item" href="{% url 'HomeUser' %}">Math</a></li>
+                            <li><a class="dropdown-item" href="{% url 'HomeUser' %}">Geography</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Resources
+                        </a>
+                        <ul class="dropdown-menu " aria-labelledby="navbarScroll">
+                            <li><a class="dropdown-item" target="_blank" href="https://www.khanacademy.org/">Khan
+                                    Academy</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="https://www.coursera.org/">Coursera</a>
+                            </li>
+                            <li><a class="dropdown-item" target="_blank" href="https://www.gutenberg.org/">Project
+                                    Gutenberg</a></li>
+                            <li><a class="dropdown-item" target="_blank"
+                                    href="https://www.openculture.com/freeonlinecourses">Online university courses</a>
+                            </li>
+                            <li><a class="dropdown-item" target="_blank" href="https://scholar.google.com/">Google
+                                    Scholar</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link active text-white" aria-current="page" href="#" >Contact</a>
+                    </li>
+                </ul>
+                <form class="d-flex justify-content-end text-white">
+                    <a href="{% url 'index' %}"><button class="btn btn-outline-secondary text-white rounded-circle  "
+                        type="button"><i class="bi bi-person-circle "></i> {{user}}</button></a>
 
+                    <a href="{% url 'index' %}"><button class="btn btn-outline-secondary text-white ms-2 me-5"
+                            type="button">Log out</button></a>
+
+                </form>
+            </div>
+        </div>
+    </nav>
     {% block content %}
 
     {% endblock %}

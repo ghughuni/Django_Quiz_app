@@ -2,7 +2,7 @@
 {% block title %}Action detail{% endblock %}
 
 {% block content %}
-<nav class="navbar bg-dark" data-bs-theme="dark">
+<!-- <nav class="navbar bg-dark" data-bs-theme="dark">
 	<form class="container-fluid justify-content-space_around">
 		<a href="{% url 'index' %}">
 			<div class="logo mx-5"><img src="../static/quiz/images/logo.jpg"></div>
@@ -11,51 +11,40 @@
 		<a href="{% url 'index' %}"><button class="btn btn-outline-secondary text-white mx-5" type="button">Log
 				out</button></a>
 	</form>
-</nav>
-{% if question is None %}
-<div class="container text-center p-5 my-5 bg-opacity-75 bg-dark text-white rounded">
-	<div class="my-4">
-		<h1>You have already answered all questions. Look at the leaderboard</h1>
-		<a href="{% url 'panel' %}" class="text-warning my-5 fs-5">More...</a>
-	</div>
-</div>
-
-{% else %}
-
+</nav> -->
 <div class="container p-5 my-5 bg-info text-dark rounded">
 	<div class="my-4">
-		<h2>your category id is: {{category_id}}</h2>
-		<h3>
-			{{question.text}}
-		</h3>
-
-		<form method="POST" class="form">
+		<div class="d-flex justify-content-center">
+			<h3 name="{{category_name.0}}">
+				Quiz of "{{category_name.1}}"
+			</h3>
+		</div>
+		<form method="POST" action="/panel/" class="form">
 			{% csrf_token %}
-			<input type="hidden" name="question_pk" value="{{question.pk}}">
-
-			{% for options in question.options.all %}
-			<div class="form-check mx-4">
-				<input class="form-check-input" type="radio" name="answer_pk" value="{{options.pk}}"
-					id="choice-{{forloop.counter}}">
-				<label class="form-check-label" for="choice-{{forloop.counter}}">
-					{{options.text}}
-				</label>
+			<input type="hidden" name="id" value="{{category_questions}}">
+			<input type="hidden" name="answer_{{question.id}}" value="">
+			<input type="hidden" name="question_id" value="{{anwers_options}}">
+			<input type="hidden" name="category_id" value="{{ category_id }}">
+			<div class="container px-4">
+				{% for question in category_questions %}
+				<span class="fs-4 fw-lighter">{{ forloop.counter }}.</span>
+				<span class="fs-4">{{ question.text }}</span>
+				<div class="col px-3">
+					{% for option in question.answers %}
+					<input class="form-check-input" type="radio" name="answer_{{ question.id }}" value="{{ option.0 }}"
+						id="choice-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+					<label class="form-check-label px-3"
+						for="choice-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">{{ option.1 }}</label>
+					{% endfor %}
+				</div>
+				<hr>
+				{% endfor %}
 			</div>
-			{% endfor %}
-
-			<a href="{% url 'action' %}">
-				<button class="btn btn-success my-2">
-					Next
-				</button>
-			</a>
-
+			<div class="d-flex justify-content-center">
+				<button class="btn btn-primary rounded px-5" type="submit" name="finish_button" id="submit_button">Finish</button>
+			</div>
 		</form>
-
 	</div>
-
 </div>
-
-
-{% endif %}
 
 {% endblock %}
