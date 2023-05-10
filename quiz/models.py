@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-import random
 
 class Category(models.Model):
 	name = models.CharField(max_length=100)
@@ -17,7 +16,6 @@ class Question(models.Model):
 	def __str__(self):
 		return self.text 
 
-
 class ChooseAnswer(models.Model):
 	MAX_RESPONSES = 4
 	question = models.ForeignKey(Question, related_name='options', on_delete=models.CASCADE)
@@ -30,39 +28,6 @@ class QuizUsers(models.Model):
     users = models.ForeignKey(User, on_delete=models.CASCADE, default=False, null=False)
     total_score = models.DecimalField(verbose_name='total_score', default=0, decimal_places=2, max_digits=10)
     choose_category = models.DecimalField(verbose_name='choose_category', default=0, decimal_places=0, max_digits=10)
-     
-    # def create_attempts(self, question, choose_category, selected_answer, is_correct):
-    #     question_answered = QuestionsAnswered(
-    #         quizUser=self,
-    #         question=question,
-    #         category=choose_category,
-    #         selected_answer=selected_answer,
-    #         correct=is_correct
-    #     )
-    #     question_answered.save()
-
-    # def validate_attempts(self, question_answered, selected_answer):
-    #     if question_answered.question_id != selected_answer.question_id:
-    #         return
-
-    #     question_answered.selected_answer = selected_answer
-    #     if selected_answer.correct is True:
-    #         question_answered.correct = True
-    #         question_answered.obtained_score = selected_answer.question.max_score
-    #         question_answered.answer = selected_answer
-    #     else:
-    #         question_answered.answer = selected_answer
-
-    #     question_answered.save()
-
-    #     self.update_score()
-
-    # def update_score(self):
-    #     updated_score = self.filter(correct=True).aggregate(
-    #         models.Sum('obtained_score'))['obtained_score__sum']
-
-    #     self.total_score = updated_score
-    #     self.save()
 
 class QuestionsAnswered(models.Model):
     quizUser = models.ForeignKey(QuizUsers, on_delete=models.CASCADE, related_name='attempts')

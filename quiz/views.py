@@ -6,7 +6,8 @@ from .models import QuizUsers, Question, QuestionsAnswered, Category, ChooseAnsw
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Sum
 from decimal import Decimal
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 def index(request):
 
@@ -77,7 +78,6 @@ def panel(request):
                 selected_option_id = int(request.POST.get(answer_key, ''))
                 selected_answer = ChooseAnswer.objects.get(pk=selected_option_id)
                 category_id=request.POST['category_id']
-                #correct_option = ChooseAnswer.objects.get(id=selected_answer.id)
                 
                 if selected_answer.correct is True:
                     obtained_score = selected_answer.question.max_score
@@ -95,11 +95,13 @@ def panel(request):
                 user.save()
             return redirect('panel') 
     else:
+        categories = Category.objects.all()
         total_user_quiz = QuizUsers.objects.order_by('-total_score')[:10]
         counter = total_user_quiz.count()
         context = {
             'users_quiz': total_user_quiz,
-            'count_user': counter
+            'count_user': counter,
+            'categories': categories,
         }
         return render(request, 'play/panel.html', context)
     return redirect('panel')  
@@ -127,21 +129,26 @@ def register(request):
 
     title = 'Create an account'
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        if not (username and email and password1 and password2):
+            error_msg = 'Please fill out all fields'
+            return render(request, 'users/register.html', {'title': title, 'error_msg': error_msg})
+
+        if password1 != password2:
+            error_msg = 'Passwords do not match'
+            return render(request, 'users/register.html', {'title': title, 'error_msg': error_msg})
+
+        if User.objects.filter(username=username).exists():
+            error_msg = 'Username is taken'
+            return render(request, 'users/register.html', {'title': title, 'error_msg': error_msg})
+        user = User.objects.create_user(username=username, email=email, password=password1)
+        user.save()
+        return redirect('login')
     else:
-        form = RegistrationForm()
-
-    context = {
-
-        'form': form,
-        'title': title
-
-    }
-
-    return render(request, 'users/register.html', context)
+        return render(request, 'users/register.html', {'title': title})
 
 
 def logout_view(request):

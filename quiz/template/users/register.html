@@ -1,28 +1,49 @@
 {% extends 'base.html' %}
 {% block title %}Register page{% endblock %}
 {% block content %}
+<form method="POST">
+	<div class="container py-5 my-5 bg-opacity-75 bg-dark text-white rounded shadow-lg">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<h2 class="text-center mb-4">Create an Account</h2>
 
-<div class="container py-5 my-5 bg-opacity-75 bg-dark text-white rounded shadow-lg">
-	<div class="row justify-content-center">
-		<div class="col-md-6">
-			<h2 class="text-center mb-4">Create an Account</h2>
-			<form method="POST">
 				{% csrf_token %}
 
-				{{form.as_p}}
+				<div class="form-group m-2">
+					<label for="id_username">Username:</label>
+					<input type="text" name="username" id="id_username" class="form-control" placeholder="Enter your name" required>
+				</div>
+
+				<div class="form-group m-2">
+					<label for="id_email">Email address:</label>
+					<input type="email" name="email" id="id_email" class="form-control" placeholder="Enter email" required>
+				</div>
+
+				<div class="form-group m-2">
+					<label for="id_password1">Password:</label>
+					<input type="password" name="password1" id="id_password1" class="form-control" placeholder="Password" required>
+				</div>
+
+				<div class="form-group m-2">
+					<label for="id_password2">Confirm Password:</label>
+					<input type="password" name="password2" id="id_password2" class="form-control" placeholder="Confirm Password" required>
+				</div>
+
 				<div class="text-center">
 					<button class="btn btn-primary btn-lg w-50 rounded-pill mt-4" name="submit" type="submit">
 						Submit
 					</button>
 				</div>
-			</form>
 
-			<hr class="my-4">
-			<div class="text-center">
-				<p class="mb-0">Already have an account?</p>
-				<a href="{% url 'login' %}" class="btn btn-outline-light rounded-pill mt-2 px-3">Log In</a>
+
+
+				<hr class="my-4">
+				<div class="text-center">
+					<p class="mb-0">Already have an account?</p>
+					<a href="{% url 'login' %}" class="btn btn-outline-info rounded-pill mt-2 px-3">Log In</a>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</form>
 {% endblock %}

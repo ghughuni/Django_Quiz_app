@@ -3,19 +3,20 @@
 
 <head>
     <title>{% block titulo %}{% endblock %}</title>
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'quiz/style.css' %}">
+    <script src="{% static 'main.js' %}"></script>
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Rubik" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans|Rubik" rel="stylesheet"> -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'quiz/style.css' %}">
-    <script src="{% static 'main.js' %}"></script>
 </head>
 
-<body>
+<body class="bg-image">
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark" data-bs-theme="dark">
         <div class="container-fluid ">
             <a class="navbar-brand" href="{% url 'HomeUser' %}">
@@ -28,12 +29,12 @@
             </button>
             <div class="collapse navbar-collapse " id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 " style="--bs-scroll-height: 100px;">
-                    <li class="nav-item text-white">
+                    <li class="nav-item text-white mx-2">
                         <a class="nav-link active text-white" aria-current="page" href="{% url 'HomeUser' %}"><i
                                 class="bi bi-house">
                             </i>Home</a>
                     </li>
-                    <li class="nav-item dropdown ">
+                    <li class="nav-item dropdown mx-2">
                         <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             Category
@@ -44,7 +45,7 @@
                             <li><a class="dropdown-item" href="{% url 'HomeUser' %}">Geography</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown ">
+                    <li class="nav-item mx-2 dropdown ">
                         <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             Resources
@@ -63,11 +64,11 @@
                                     Scholar</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item ">
+                    <li class="nav-item mx-2">
                         <a class="nav-link active text-white" aria-current="page"
                             href="{% url 'panel' %}">Leaderboard</a>
                     </li>
-                    <li class="nav-item ">
+                    <li class="nav-item mx-2">
                         <a class="nav-link active text-white" aria-current="page" href="{% url 'contact' %}">Contact</a>
                     </li>
                 </ul>
@@ -75,13 +76,12 @@
                     {% if user.is_authenticated %}
                     <a href="{% url 'HomeUser' %}"><button class="btn btn-outline-secondary text-white rounded-pill"
                             type="button"><i class="bi bi-person-circle "></i> {{user}}</button></a>
-                    <a href="{% url 'logout_view' %}"><i
-                            class="bi bi-box-arrow-in-right fs-4 text-white ms-4 me-5"></i></a>
+                    <a href="{% url 'logout_view' %}"><i class="bi bi-box-arrow-in-right fs-4 text-white ms-4 me-5"
+                            title="Log Out"></i></a>
 
                     {% else %}
-                    <a href="{% url 'register' %}"><button
-                            class="btn btn-outline-secondary rounded-pill text-white me-5" type="button"><i
-                                class="bi bi-person-circle "> </i>Sign In</button></a>
+                    <a href="{% url 'login' %}"><button class="btn btn-outline-secondary rounded-pill text-white me-5"
+                            title="LogIn" type="button"><i class="bi bi-person-circle "> </i>Log In</button></a>
                     {% endif %}
                 </form>
             </div>

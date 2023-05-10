@@ -2,44 +2,51 @@
 {% block title %}Home page{% endblock %}
 {% block content %}
 
-
 {% if user.is_authenticated %}
 <div class="container  p-5 my-5 bg-opacity-75 bg-dark text-white rounded shadow-lg">
-	<h1 class="text-center">
-		Welcome "{{user}}"
-	</h1>
-	<p>Please read the rules:</p>
-	<ul>
-		<li>Select a category</li>
-		<li>Mark one answer only</li>
-		<li>Click 'Next' button only after marked answer</li>
-		<li>You are not limited by time</li>
-		<li>There are 10 questions in total</li>
-	</ul>
-	<div class="text-center">
-		<form id="myForm" action="/action/" method="post">
-			{% csrf_token %}
-			<input type="hidden" name="category" value="{{category}}">
-			<input type="hidden" name="question" value="{{question}}">
-			<label for="categories" class="mx-2 text-white fw-bold">Choose a category:</label>
-			<select name="category" id="category_options" class="mx-2 text-dark fw-bold">
-				{%for category in categories%}
-				<option value="{{category.id}}">{{category}}</option>
-				{%endfor%}
-			</select>
-			<button class="btn btn-primary rounded px-5" type="submit" id="submit_button">Start</button>
-		</form>
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<h1 class="text-center text-warning my-4">
+				Welcome "{{user}}"
+			</h1>
+			<p class="text-danger my-1">Please read the rules:</p>
+			<ul>
+				<li>Choose a category before starting the quiz.</li>
+				<li>Only mark one answer per question.</li>
+				<li>You are not limited by time and can take as long as you need to complete the quiz.</li>
+				<li>The quiz contains 10 questions in total.</li>
+				<li>When you're done, click the Finish button.</li>
+			</ul>
+			<div class="text-center my-4">
+				<form id="myForm" action="/action/" method="post">
+					{% csrf_token %}
+					<input type="hidden" name="category" value="{{category}}">
+					<input type="hidden" name="question" value="{{question}}">
+					<hr class="my-4">
+					<label for="categories" class="mx-2 text-danger fw-bold">Choose a category:</label>
+
+					<select name="category" id="category_options" class="mx-2 text-dark fw-bold px-5 py-1">
+						{%for category in categories%}
+						<option value="{{category.id}}">{{category}}</option>
+						{%endfor%}
+					</select>
+					<button class="btn btn-primary rounded-pill px-5 my-2" type="submit" id="submit_button"
+						title="Start">Start</button>
+				</form>
+			</div>
+		</div>
 	</div>
-</div>
-{% else %}
-<div class="container text-center p-5 my-5 bg-opacity-75 bg-dark text-white rounded">
-	<h1 class="my-5 test">Test your knowledge</h1>
-	<h2 class="my-5 test">Get started today</h2>
-	<a href="{% url 'register' %}">
-		<button class="btn btn-primary btn-lg px-4 m-5 rounded-pill">
-			Register
-		</button>
-	</a>
+	{% else %}
+	<div class="container text-center p-5 my-5 bg-opacity-75 bg-dark text-white rounded">
+		<h1 class="my-5 test">Test your knowledge</h1>
+		<h1 class="text-warning">Challenge yourself and learn something new</h1>
+		<h2 class="my-5 test">Get started today</h2>
+		<a href="{% url 'register' %}">
+			<button class="btn btn-primary btn-lg px-4 m-5 rounded-pill" title="Register">
+				Register
+			</button>
+		</a>
+	</div>
 </div>
 {% endif %}
 

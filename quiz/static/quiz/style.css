@@ -6,10 +6,16 @@ img {
 
 body {
     background: url(images/background.jpg);
-    background-size: 100%;
+    background-size: cover;
+    background-position: center;
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: 400 !important;
 }
 
-
-
-
-
+@media screen and (max-width: 768px) {
+    body {
+      background-size: contain;
+      background-position: top;
+    }
+  }
+  

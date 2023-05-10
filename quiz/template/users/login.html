@@ -1,17 +1,38 @@
 {% extends 'base.html' %}
 {% block title %}Login page{% endblock %}
+
 {% block content %}
+<form method="POST">
+	<div class="container text-center p-5 my-5 bg-opacity-75 bg-dark text-white rounded">
+		<div class="container my-5 border-1">
+			{% csrf_token %}
+			<h3 class="text-center text-danger my-3">Sign in</h3>
+			<div class="text-center my-4 d-flex justify-content-center">
+				<div class="border-top w-50"></div>
+			  </div>			  
+			  
+			<div class="form-group m-2">
+				<label for="id_username"><i class="bi bi-person-circle"> </i> Username:</label>
+				<input type="text" name="username" id="id_username" class="my-1" required>
+			</div>
 
-<div class="container text-center p-5 my-5 bg-opacity-75 bg-dark text-white rounded">
-	<form method="POST">
-		{% csrf_token %}
+			<div class="form-group m-2">
+				<label for="id_password"><i class="bi bi-lock-fill"> </i> Password:</label>
+				<input type="password" name="password" id="id_password" class="my-1" required>
+			</div>
 
-		{{form.as_p}}
+			<button class="btn btn-primary rounded-pill m-2" type="submit">
+				Login
+			</button>
+			<div class="text-center my-4 d-flex justify-content-center">
+				<div class="border-top w-50"></div>
+			  </div>	
+			<div class="text-center my-5">
+				<p>or</p>
+				<a href="{% url 'register' %}" class="btn btn-outline-info rounded-pill mt-2 px-3">Create account</a>
+			</div>
+		</div>
+	</div>
+</form>
 
-		<button class="btn btn-primary rounded-pill" type="submit">
-			Submit
-		</button>
-
-	</form>
-</div>
 {% endblock %}
