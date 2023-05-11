@@ -17,6 +17,13 @@ def index(request):
 
     return render(request, 'index.html', context)
 
+def allcategories(request):
+    categories = Category.objects.all()
+    context = {
+        'categories': categories,
+    }
+
+    return render(request, 'base.html', context)
 
 def HomeUser(request):
     categories = Category.objects.all()
@@ -69,10 +76,11 @@ def action(request):
 
 def panel(request):
     if request.method == 'POST':
-        category_questions = Question.objects.filter(category_id=request.POST['category_id'])
-        total_questions = len(category_questions)
-        user = QuizUsers.objects.filter(users=request.user).last()
         if 'finish_button' in request.POST:
+            category_questions = Question.objects.filter(category_id=request.POST['category_id'])
+            user=User.objects.filter(username=request.user).values_list('id')
+            user_id=user[0][0]
+            user = QuizUsers.objects.filter(users=user_id).values_list('id')[0][0]
             for question in category_questions:
                 answer_key = 'answer_{}'.format(question.id)
                 selected_option_id = int(request.POST.get(answer_key, ''))
@@ -90,10 +98,30 @@ def panel(request):
                     answer=selected_answer,
                     obtained_score=obtained_score
                 )
-                total_score = QuestionsAnswered.objects.filter(quizUser=user).aggregate(Sum('obtained_score'))['obtained_score__sum']
-                user.total_score=Decimal(str(total_score))
-                user.save()
+                total_score = QuestionsAnswered.objects.filter(quizUser=user, category=request.POST['category_id']).aggregate(Sum('obtained_score'))['obtained_score__sum']
+                this_user = QuizUsers.objects.get(users=user_id, choose_category=request.POST['category_id'])
+                this_user.total_score = total_score
+                this_user.save()
+
             return redirect('panel') 
+        if 'filter_button' in request.POST:
+            category_id = request.POST.get('category_id', None)
+        if category_id:
+            user_scores = QuizUsers.objects.filter(
+                choose_category=category_id
+            ).order_by('-total_score')[:10]
+        else:
+            user_scores = QuizUsers.objects.order_by('-total_score')[:10]
+        
+        count_user = user_scores.count()
+        categories = Category.objects.all()
+        context = {
+            'users_quiz': user_scores,
+            'count_user': count_user,
+            'categories': categories,
+        }
+        return render(request, 'play/panel.html', context)
+    
     else:
         categories = Category.objects.all()
         total_user_quiz = QuizUsers.objects.order_by('-total_score')[:10]

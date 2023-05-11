@@ -3,6 +3,7 @@
 
 {% block content %}
 <form method="POST">
+	{% csrf_token %}
 	<div class="container text-center p-5 my-5 bg-opacity-75 bg-dark text-white rounded">
 		<div class="container my-5 border-1">
 			{% csrf_token %}

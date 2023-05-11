@@ -30,7 +30,7 @@ class QuizUsers(models.Model):
     choose_category = models.DecimalField(verbose_name='choose_category', default=0, decimal_places=0, max_digits=10)
 
 class QuestionsAnswered(models.Model):
-    quizUser = models.ForeignKey(QuizUsers, on_delete=models.CASCADE, related_name='attempts')
+    quizUser = models.IntegerField()
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     category = models.IntegerField()
     answer = models.ForeignKey(ChooseAnswer, on_delete=models.CASCADE, null=True)
