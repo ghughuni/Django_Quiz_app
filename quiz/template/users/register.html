@@ -6,7 +6,7 @@
 	<div class="container py-5 my-5 bg-opacity-75 bg-dark text-white rounded shadow-lg">
 		<div class="row justify-content-center">
 			<div class="col-md-6">
-				<h2 class="text-center mb-4">Create an Account</h2>
+				<h2 class="text-center text-danger mb-4">Create an Account</h2>
 
 				{% csrf_token %}
 
@@ -36,11 +36,9 @@
 					</button>
 				</div>
 
-
-
 				<hr class="my-4">
 				<div class="text-center">
-					<p class="mb-0">Already have an account?</p>
+					<p class="mb-0 text-warning">Already have an account?</p>
 					<a href="{% url 'login' %}" class="btn btn-outline-info rounded-pill mt-2 px-3">Log In</a>
 				</div>
 			</div>

@@ -10,6 +10,7 @@ from .views import (
     action,
     panel,
     contact,
+    results
 )
 
 urlpatterns = [
@@ -21,6 +22,7 @@ urlpatterns = [
     path('panel/', panel, name='panel'),
     path('action/', action, name='action'),
     path('contact/', contact, name='contact'),
+    path('results/', results, name='results'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

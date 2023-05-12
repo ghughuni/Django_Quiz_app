@@ -17,14 +17,6 @@ def index(request):
 
     return render(request, 'index.html', context)
 
-def allcategories(request):
-    categories = Category.objects.all()
-    context = {
-        'categories': categories,
-    }
-
-    return render(request, 'base.html', context)
-
 def HomeUser(request):
     categories = Category.objects.all()
     questions = Question.objects.all()
@@ -132,7 +124,6 @@ def panel(request):
             'categories': categories,
         }
         return render(request, 'play/panel.html', context)
-    return redirect('panel')  
 
 def loginView(request):
     title = 'HomeUser'
@@ -147,14 +138,12 @@ def loginView(request):
     context = {
         'form': form,
         'title': title,
-
     }
 
     return render(request, 'users/login.html', context)
 
 
 def register(request):
-
     title = 'Create an account'
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -185,4 +174,60 @@ def logout_view(request):
 
 def contact(request):
     return render(request, 'contact.html')
+
+def results(request):
+    user_id = request.user.id
+    user_quiz = QuizUsers.objects.filter(users=user_id).values()
+    try:
+        messages= None
+        quiz_User = int(user_quiz[0]['id'])
+        category_id = request.POST.get('category_id')
+        if category_id:
+            category_questions = Question.objects.filter(category_id=category_id).values()
+            questions = []
+            for question in category_questions:
+                answered = QuestionsAnswered.objects.filter(quizUser=quiz_User, category=category_id, question=question['id']).values()
+                question_text = question['text']
+                if answered:
+                    user_answered = ChooseAnswer.objects.filter(id=answered[0]['answer_id']).values_list('text')[0][0]
+                    correct_answer = ChooseAnswer.objects.filter(question=question['id'], correct=True).values_list('text')[0][0]
+                    score = Question.objects.filter(id=question['id']).values_list('max_score')[0][0]
+                else:
+                    question_text = '-'
+                    user_answered = '-'
+                    correct_answer = '-'
+                    score = 0
+
+                questions.append({
+                    'question_text': question_text,
+                    'answer': user_answered,
+                    'correct_answer': correct_answer,
+                    'score': score
+                    })
+            category_name = Category.objects.get(id=category_id).name
+            try: 
+                total_score = QuizUsers.objects.filter(users=user_id, choose_category=category_id).values_list('total_score')[0][0]
+            except:
+                total_score=0
+            context = {
+                'questions': questions,
+                'total_score': total_score,
+                'categories': Category.objects.all(),
+                'selected_category_id': category_id,
+                'category_name': category_name,
+            }
+            return render(request, 'users/results.html', context)
+
+        context = {
+            'categories': Category.objects.all(),
+        }
+        return render(request, 'users/results.html', context)
+    except:
+        messages='You have not taken any quiz yet.'
+        context = {
+            'messages': messages,
+        }
+        return render(request, 'users/results.html', context)
+
+
 

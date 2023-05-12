@@ -2,7 +2,7 @@
 {% block title %}Panel detail{% endblock %}
 {% block content %}
 {% csrf_token %}
-<div class="container text-center p-5 my-5  bg-info bg-gradient text-white rounded">
+<div class="container text-center p-4 my-5  bg-info bg-gradient text-white rounded">
 	<form method="POST">
 		{% csrf_token %}
 		<h1 class="text-center">
@@ -10,8 +10,8 @@
 				The {{count_user}} best players
 			</span>
 		</h1>
-		<select name="category_id" id="category_options" class="mx-2 p-2 text-dark fw-bold px-5">
-			<option value="">All categories</option>
+		<select name="category_id" id="category_options" class="mx-2 p-1 text-dark fw-bold px-5">
+			<option value="">-- Select a category --</option>
 			{% for category in categories %}
 			<option value="{{ category.id }}">{{ category }}</option>
 			{% endfor %}
