@@ -191,7 +191,7 @@ def results(request):
                 if answered:
                     user_answered = ChooseAnswer.objects.filter(id=answered[0]['answer_id']).values_list('text')[0][0]
                     correct_answer = ChooseAnswer.objects.filter(question=question['id'], correct=True).values_list('text')[0][0]
-                    score = Question.objects.filter(id=question['id']).values_list('max_score')[0][0]
+                    score = answered[0]['obtained_score']
                 else:
                     question_text = '-'
                     user_answered = '-'
