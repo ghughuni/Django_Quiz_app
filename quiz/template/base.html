@@ -22,7 +22,7 @@
 
 <body class="bg-image">
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark" data-bs-theme="dark">
+    <nav class="navbar fixed-top navbar-expand-lg bg-dark navbar-dark" data-bs-theme="dark">
         <div class="container-fluid ">
             <a class="navbar-brand" href="{% url 'HomeUser' %}">
                 <div class="logo mx-5"><img src="../static/quiz/images/logo.jpg"></div>
@@ -85,7 +85,7 @@
                 </ul>
                 <form class="d-flex justify-content-end text-white">
                     {% if user.is_authenticated %}
-                    <a href="{% url 'HomeUser' %}"><button class="btn btn-outline-secondary text-white rounded-pill"
+                    <a href="{% url 'HomeUser' %}"><button class="btn btn-outline-secondary text-danger rounded-pill"
                             type="button"><i class="bi bi-person-circle "></i> {{user}}</button></a>
                     <a href="{% url 'logout_view' %}"><i class="bi bi-box-arrow-in-right fs-4 text-white ms-4 me-5"
                             title="Log Out"></i></a>
@@ -99,10 +99,11 @@
         </div>
     </nav>
     <!-- Main Content Section -->
-    {% block content %}
+    <div class="container py-5">
+        {% block content %}
 
-    {% endblock %}
-
+        {% endblock %}
+    </div>
     <!-- Footer Section -->
     <footer class="bg-dark text-white py-1 mt-5 fixed-bottom">
         <div class="container">

@@ -34,16 +34,16 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 var timeleft = 900; // 15 minutes in seconds
-	var downloadTimer = setInterval(function(){
-	  timeleft--;
-	  var minutes = Math.floor(timeleft / 60);
-	  var seconds = timeleft % 60;
-	  if (seconds < 10) {
-		seconds = "0" + seconds;
-	  }
-	  document.getElementById("timer").innerHTML = minutes + ":" + seconds;
-	  if(timeleft <= 0){
-      clearInterval(downloadTimer);
-      window.location.href = "/results"; 
-    }
-	}, 1000);
+var downloadTimer = setInterval(function () {
+  timeleft--;
+  var minutes = Math.floor(timeleft / 60);
+  var seconds = timeleft % 60;
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+  document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+  if (timeleft <= 0) {
+    clearInterval(downloadTimer);
+    window.location.href = "/results";
+  }
+}, 1000);
