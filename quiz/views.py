@@ -8,6 +8,8 @@ from django.db.models import Sum
 from decimal import Decimal
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+import random
+
 
 def index(request):
 
@@ -16,6 +18,7 @@ def index(request):
     }
 
     return render(request, 'index.html', context)
+
 
 def HomeUser(request):
     categories = Category.objects.all()
@@ -27,24 +30,28 @@ def HomeUser(request):
 
     return render(request, 'users/home.html', context)
 
+
 def action(request):
     choose_category = request.POST.get('category')
     if not choose_category:
         return HttpResponse('Category cannot be null')
-    category_name=Category.objects.filter(id=choose_category).values_list('id', 'name').first()
-    validate_categorys=QuizUsers.objects.filter(users=request.user).values_list('choose_category')
-    for category in validate_categorys:
-        if str(category[0])==choose_category:
-            return redirect('HomeUser')
-    QuizUser, created = QuizUsers.objects.get_or_create(users=request.user, choose_category=choose_category)
-    category_questions = Question.objects.filter(category_id=QuizUser.choose_category).values()
-    choose_Answers_questions=ChooseAnswer.objects.all()
-    anwers_options={}
+    category_name = Category.objects.filter(
+        id=choose_category).values_list('id', 'name').first()
+    validate_categorys = QuizUsers.objects.filter(
+        users=request.user).values_list('choose_category')
+    QuizUser, created = QuizUsers.objects.get_or_create(
+        users=request.user, choose_category=choose_category)
+    category_questions = Question.objects.filter(
+        category_id=QuizUser.choose_category).values()
+    choose_Answers_questions = ChooseAnswer.objects.all()
+    anwers_options = {}
     selected_answers = {}
-    category_questions = list(category_questions) 
+    category_questions = list(category_questions)
+    random.shuffle(category_questions)
     for question in category_questions:
         question_id = question['id']
-        choose_Answers_questions=ChooseAnswer.objects.filter(question_id=question_id).values_list('id', 'text')
+        choose_Answers_questions = ChooseAnswer.objects.filter(
+            question_id=question_id).values_list('id', 'text')
         anwers_options[question_id] = list(choose_Answers_questions)
         answer_value = request.POST.get('answer_' + str(question['id']))
         if question_id in anwers_options:
@@ -63,39 +70,59 @@ def action(request):
         'anwers_options': anwers_options,
         'answer_value': answer_value,
         'selected_answers': selected_answers
-        }
+    }
     return render(request, 'play/action.html', context)
+
 
 def panel(request):
     if request.method == 'POST':
         if 'finish_button' in request.POST:
-            category_questions = Question.objects.filter(category_id=request.POST['category_id'])
-            user=User.objects.filter(username=request.user).values_list('id')
-            user_id=user[0][0]
-            user = QuizUsers.objects.filter(users=user_id).values_list('id')[0][0]
+            category_questions = Question.objects.filter(
+                category_id=request.POST['category_id'])
+            user = User.objects.filter(username=request.user).values_list('id')
+            user_id = user[0][0]
+            user = QuizUsers.objects.filter(
+                users=user_id).values_list('id')[0][0]
+            total_score = 0
             for question in category_questions:
                 answer_key = 'answer_{}'.format(question.id)
                 selected_option_id = int(request.POST.get(answer_key, ''))
-                selected_answer = ChooseAnswer.objects.get(pk=selected_option_id)
-                category_id=request.POST['category_id']
-                
+                selected_answer = ChooseAnswer.objects.get(
+                    pk=selected_option_id)
+                category_id = request.POST['category_id']
+
                 if selected_answer.correct is True:
                     obtained_score = selected_answer.question.max_score
                 else:
                     obtained_score = 0
-                QuestionsAnswered.objects.create(
+                question_answered = QuestionsAnswered.objects.filter(
                     question=question,
                     quizUser=user,
-                    category=category_id,
-                    answer=selected_answer,
-                    obtained_score=obtained_score
-                )
-                total_score = QuestionsAnswered.objects.filter(quizUser=user, category=request.POST['category_id']).aggregate(Sum('obtained_score'))['obtained_score__sum']
-                this_user = QuizUsers.objects.get(users=user_id, choose_category=request.POST['category_id'])
+                    category=category_id
+                ).first()
+
+                if question_answered:
+                    if obtained_score > question_answered.obtained_score:
+                        question_answered.answer = selected_answer
+                        question_answered.obtained_score = obtained_score
+                        question_answered.save()
+                else:
+                    QuestionsAnswered.objects.create(
+                        question=question,
+                        quizUser=user,
+                        category=category_id,
+                        answer=selected_answer,
+                        obtained_score=obtained_score
+                    )
+                total_score += obtained_score
+                total_score = QuestionsAnswered.objects.filter(
+                    quizUser=user, category=request.POST['category_id']).aggregate(Sum('obtained_score'))['obtained_score__sum']
+                this_user = QuizUsers.objects.get(
+                    users=user_id, choose_category=request.POST['category_id'])
                 this_user.total_score = total_score
                 this_user.save()
 
-            return redirect('panel') 
+            return redirect('panel')
         if 'filter_button' in request.POST:
             category_id = request.POST.get('category_id', None)
         if category_id:
@@ -104,7 +131,7 @@ def panel(request):
             ).order_by('-total_score')[:10]
         else:
             user_scores = QuizUsers.objects.order_by('-total_score')[:10]
-        
+
         count_user = user_scores.count()
         categories = Category.objects.all()
         context = {
@@ -113,7 +140,7 @@ def panel(request):
             'categories': categories,
         }
         return render(request, 'play/panel.html', context)
-    
+
     else:
         categories = Category.objects.all()
         total_user_quiz = QuizUsers.objects.order_by('-total_score')[:10]
@@ -124,6 +151,7 @@ def panel(request):
             'categories': categories,
         }
         return render(request, 'play/panel.html', context)
+
 
 def loginView(request):
     title = 'HomeUser'
@@ -161,7 +189,8 @@ def register(request):
         if User.objects.filter(username=username).exists():
             error_msg = 'Username is taken'
             return render(request, 'users/register.html', {'title': title, 'error_msg': error_msg})
-        user = User.objects.create_user(username=username, email=email, password=password1)
+        user = User.objects.create_user(
+            username=username, email=email, password=password1)
         user.save()
         return redirect('login')
     else:
@@ -172,25 +201,31 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
+
 def contact(request):
     return render(request, 'contact.html')
+
 
 def results(request):
     user_id = request.user.id
     user_quiz = QuizUsers.objects.filter(users=user_id).values()
     try:
-        messages= None
+        messages = None
         quiz_User = int(user_quiz[0]['id'])
         category_id = request.POST.get('category_id')
         if category_id:
-            category_questions = Question.objects.filter(category_id=category_id).values()
+            category_questions = Question.objects.filter(
+                category_id=category_id).values()
             questions = []
             for question in category_questions:
-                answered = QuestionsAnswered.objects.filter(quizUser=quiz_User, category=category_id, question=question['id']).values()
+                answered = QuestionsAnswered.objects.filter(
+                    quizUser=quiz_User, category=category_id, question=question['id']).values()
                 question_text = question['text']
                 if answered:
-                    user_answered = ChooseAnswer.objects.filter(id=answered[0]['answer_id']).values_list('text')[0][0]
-                    correct_answer = ChooseAnswer.objects.filter(question=question['id'], correct=True).values_list('text')[0][0]
+                    user_answered = ChooseAnswer.objects.filter(
+                        id=answered[0]['answer_id']).values_list('text')[0][0]
+                    correct_answer = ChooseAnswer.objects.filter(
+                        question=question['id'], correct=True).values_list('text')[0][0]
                     score = answered[0]['obtained_score']
                 else:
                     question_text = '-'
@@ -203,12 +238,13 @@ def results(request):
                     'answer': user_answered,
                     'correct_answer': correct_answer,
                     'score': score
-                    })
+                })
             category_name = Category.objects.get(id=category_id).name
-            try: 
-                total_score = QuizUsers.objects.filter(users=user_id, choose_category=category_id).values_list('total_score')[0][0]
+            try:
+                total_score = QuizUsers.objects.filter(
+                    users=user_id, choose_category=category_id).values_list('total_score')[0][0]
             except:
-                total_score=0
+                total_score = 0
             context = {
                 'questions': questions,
                 'total_score': total_score,
@@ -223,11 +259,8 @@ def results(request):
         }
         return render(request, 'users/results.html', context)
     except:
-        messages='You have not taken any quiz yet.'
+        messages = 'You have not taken any quiz yet.'
         context = {
             'messages': messages,
         }
         return render(request, 'users/results.html', context)
-
-
-

@@ -9,8 +9,8 @@
 				Quiz of "{{category_name.1}}"
 			</h3>
 		</div>
-		<div id="timer" class="d-flex justify-content-center text-danger">10:00</div>
-		
+		<div id="timer" class="d-flex justify-content-center text-danger">15:00</div>
+
 		<form method="POST" action="/panel/" class="form" id="question-form">
 			{% csrf_token %}
 			<input type="hidden" name="id" value="{{category_questions}}">
@@ -23,8 +23,8 @@
 				<span class="fs-4">{{ question.text }}</span>
 				<div class="col">
 					{% for option in question.answers %}
-					<input class="form-check-input answer-option" type="radio" name="answer_{{ question.id }}" value="{{ option.0 }}"
-						id="choice-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+					<input class="form-check-input answer-option" type="radio" name="answer_{{ question.id }}"
+						value="{{ option.0 }}" id="choice-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
 					<label class="form-check-label px-3"
 						for="choice-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">{{ option.1 }}</label>
 					{% endfor %}
@@ -33,7 +33,8 @@
 				{% endfor %}
 			</div>
 			<div class="d-flex justify-content-center">
-				<button class="btn btn-primary rounded-pill px-5 d-none" type="submit" name="finish_button" id="finish_button">Finish</button>
+				<button class="btn btn-primary rounded-pill px-5 d-none" type="submit" name="finish_button"
+					id="finish_button">Finish</button>
 
 			</div>
 			<p id="answer-count" class="d-none">A total of 0 possible answers were marked</p>
