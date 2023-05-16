@@ -11,10 +11,10 @@
                     <h1 class="fw-bold m-0">Quiz Results</h1>
                 </div>
                 {% if categories %}
-                <div class="card-body">
+                <div class="card-body bg-light">
                     <form method="post">
                         {% csrf_token %}
-                        <div class="form-group row mb-4">
+                        <div class="form-group row mb-4 ">
                             <label for="category_select" class="col-md-4 col-form-label text-md-end">Select a
                                 category:</label>
                             <div class="col-md-6">
@@ -46,7 +46,7 @@
                 <div class="card-body">
                     <h2 class="fw-bold mb-4">{{ category_name }}</h2>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover bg-light">
                             <thead class="bg-info text-white">
                                 <tr>
                                     <th scope="col">Question</th>

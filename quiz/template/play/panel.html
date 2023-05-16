@@ -32,7 +32,13 @@
 			<tr>
 				<th>{{forloop.counter}}</th>
 				<th>{{user_quiz.users.username}}</th>
-				<th>{{user_quiz.total_score}}</th>
+				<th>
+					{% if user_quiz.total_score >= 30 %}
+					{{ user_quiz.total_score }} <span class="gold-star">&#9733;</span>
+					{% else %}
+					{{ user_quiz.total_score }}
+					{% endif %}
+				  </th>
 			</tr>
 			{% endfor %}
 		</tbody>

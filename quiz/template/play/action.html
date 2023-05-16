@@ -25,7 +25,7 @@
 					{% for option in question.answers %}
 					<input class="form-check-input answer-option" type="radio" name="answer_{{ question.id }}"
 						value="{{ option.0 }}" id="choice-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
-					<label class="form-check-label px-3"
+					<label class="form-check-label pe-3"
 						for="choice-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">{{ option.1 }}</label>
 					{% endfor %}
 				</div>

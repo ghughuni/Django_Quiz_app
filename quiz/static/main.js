@@ -1,3 +1,4 @@
+// Code for handling the form and tracking answered questions
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector("#question-form");
   const submitButton = document.querySelector("#finish_button");
@@ -33,11 +34,12 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-var timeleft = 900; // 15 minutes in seconds
-var downloadTimer = setInterval(function () {
+// Code for the countdown timer
+let timeleft = 900; // 15 minutes in seconds
+let downloadTimer = setInterval(function () {
   timeleft--;
-  var minutes = Math.floor(timeleft / 60);
-  var seconds = timeleft % 60;
+  let minutes = Math.floor(timeleft / 60);
+  let seconds = timeleft % 60;
   if (seconds < 10) {
     seconds = "0" + seconds;
   }
