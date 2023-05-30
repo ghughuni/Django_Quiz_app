@@ -9,6 +9,9 @@ from decimal import Decimal
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import random
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 
 def index(request):
@@ -79,7 +82,9 @@ def panel(request):
         if 'finish_button' in request.POST:
             category_questions = Question.objects.filter(
                 category_id=request.POST['category_id'])
+            category_name = Category.objects.filter(id=request.POST['category_id']).values_list('name').first()[0]
             user = User.objects.filter(username=request.user).values_list('id')
+            user_email = User.objects.filter(username=request.user).values_list('email')[0][0]
             user_id = user[0][0]
             user = QuizUsers.objects.filter(
                 users=user_id).values_list('id')[0][0]
@@ -121,6 +126,19 @@ def panel(request):
                     users=user_id, choose_category=request.POST['category_id'])
                 this_user.total_score = total_score
                 this_user.save()
+            send_mail(
+                'Quiz Result',
+                '''Congratulations! 
+
+You have finished the {} quiz. Your total score is {}.
+
+You can try again to improve your score and get on the leaderboard, or try another category quiz.
+
+Good Luck...'''.format(category_name,total_score),
+                settings.DEFAULT_FROM_EMAIL,  
+                [user_email],  
+                fail_silently=False,
+            )
 
             return redirect('panel')
         if 'filter_button' in request.POST:
@@ -192,6 +210,18 @@ def register(request):
         user = User.objects.create_user(
             username=username, email=email, password=password1)
         user.save()
+        # Send registration email
+        send_mail(
+            'Registration Successful',
+            '''Thank you for registering on "GK-Quiz" website!
+
+Get started today by visiting: ghughuni.pythonanywhere.com
+
+Challenge yourself and learn something new!''',
+            settings.DEFAULT_FROM_EMAIL,  
+            [email],  
+            fail_silently=False,
+        )
         return redirect('login')
     else:
         return render(request, 'users/register.html', {'title': title})
