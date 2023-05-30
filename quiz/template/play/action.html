@@ -19,7 +19,7 @@
 			<input type="hidden" name="category_id" value="{{ category_id }}">
 			<div class="container ">
 				{% for question in category_questions %}
-				<span class="fs-4 fw-lighter">{{ forloop.counter }}.</span>
+				<span class="fs-4 text-secondary">{{ forloop.counter }}. </span>
 				<span class="fs-4">{{ question.text }}</span>
 				<div class="col">
 					{% for option in question.answers %}

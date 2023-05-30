@@ -17,6 +17,8 @@
         rel="stylesheet">
     <link rel="stylesheet" href="{% static 'quiz/style.css' %}">
     <script src="{% static 'main.js' %}"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v9.0"
+        nonce="8E6OZDVx"></script>
 
 </head>
 
@@ -25,7 +27,7 @@
     <nav class="navbar fixed-top navbar-expand-lg bg-dark navbar-dark" data-bs-theme="dark">
         <div class="container-fluid ">
             <a class="navbar-brand" href="{% url 'HomeUser' %}">
-                <div class="logo mx-5"><img src="../static/quiz/images/logo.jpg"></div>
+                <div class="logo mx-5"><img src="../static/quiz/images/logo.png"></div>
             </a>
             <button class="navbar-toggler btn-dark" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
