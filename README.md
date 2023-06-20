@@ -3,6 +3,10 @@ Django_Quiz_app
 
 https://ghughuni.pythonanywhere.com/
 
+**Used Tools:**
+--> Front-end (HTML, CSS, Bootstrap, JavaScript) to design the responsive pages.
+--> Back-end (Python, Django, MySQL) databases for storing and fetching data.
+
 **Current Features**
 
 **Site access features:** 
