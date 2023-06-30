@@ -241,7 +241,7 @@ def results(request):
     user_id = request.user.id
     user_quiz = QuizUsers.objects.filter(users=user_id).values()
     try:
-        messages = None
+        messages_text = None
         quiz_User = int(user_quiz[0]['id'])
         category_id = request.POST.get('category_id')
         if category_id:
@@ -290,8 +290,8 @@ def results(request):
         }
         return render(request, 'users/results.html', context)
     except:
-        messages = 'You have not taken any quiz yet.'
+        messages_text = 'You have not taken any quiz yet.'
         context = {
-            'messages': messages,
+            'messages_text': messages_text,
         }
         return render(request, 'users/results.html', context)
