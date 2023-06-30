@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 import random
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib import messages
 
 
 
@@ -197,16 +198,16 @@ def register(request):
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
         if not (username and email and password1 and password2):
-            error_msg = 'Please fill out all fields'
-            return render(request, 'users/register.html', {'title': title, 'error_msg': error_msg})
+            messages.error(request, 'Please fill out all fields')
+            return render(request, 'users/register.html')
 
         if password1 != password2:
-            error_msg = 'Passwords do not match'
-            return render(request, 'users/register.html', {'title': title, 'error_msg': error_msg})
+            messages.error(request, 'Passwords do not match')
+            return render(request, 'users/register.html')
 
         if User.objects.filter(username=username).exists():
-            error_msg = 'Username is taken'
-            return render(request, 'users/register.html', {'title': title, 'error_msg': error_msg})
+            messages.error(request, 'Username already exists')
+            return render(request, 'users/register.html')
         user = User.objects.create_user(
             username=username, email=email, password=password1)
         user.save()
